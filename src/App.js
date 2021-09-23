@@ -50,10 +50,12 @@ render() {
     <div className="App">
       <select name='Sort'>
         <option value='all'>All</option>
-        <option value='stories'>Stories</option>
+        <option onClick={this.handleStories}value='stories'>{this.state.handleStories} Stories</option>
         <option value='comments'>Comments</option>
       </select>
-      
+      <ul>
+        <li></li>
+      </ul>
     </div>
   );
  }

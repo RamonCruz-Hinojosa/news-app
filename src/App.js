@@ -14,7 +14,8 @@ constructor(props) {
     search:'',
   };
 }
-  
+
+
 handleChange = (event) => {
   this.setState({
     search: event.target.value,
@@ -26,20 +27,21 @@ handleSubmit = (event) => {
   fetch(`http://hn.algolia.com/api/v1/search?query=${this.state.search}`)
   .then(res => res.json())
   .then(news => {this.setState({search: '', stories: news.hits})})
-}
-  
-handleStories = (event) => {
-  fetch(`http://hn.algolia.com/api/v1/search?tags=story`)
-  .then(res => res.json())
-  .then(news => {this.setState({stories:news.hits})})
+ console.log(this.state.stories)
 }
   
 
-handleComments = (event) => {
-  fetch(`http://hn.algolia.com/api/v1/search?tags=comment`)
+handleChange = (event) => {
+  fetch(`http://hn.algolia.com/api/v1/search?tags=${event.target.value}`)
   .then(res => res.json())
-  .then(news => {this.setState({stories:news.hits})} )
+  .then(news => {this.setState({stories: news.hits})})
+  console.log(event.target.value)
 }
+  
+componentDidUpdate(){
+  console.log(this.state.stories)
+}
+
 
  
 
@@ -48,13 +50,15 @@ handleComments = (event) => {
 render() {
   return (
     <div className="App">
-      <select name='Sort'>
+      <select name='Sort' onChange={this.handleChange}>
         <option value='all'>All</option>
-        <option onClick={this.handleStories}value='stories'>{this.state.handleStories} Stories</option>
-        <option value='comments'>Comments</option>
+        <option value='story'>Story</option>
+        <option value='comment'>Comments</option>
       </select>
-      <ul>
-        <li></li>
+      <ul> {this.state.stories.map((story, index) =>{
+        return  <li key={index}>{story[index]}</li>
+      } )}
+       
       </ul>
     </div>
   );
